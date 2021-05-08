@@ -1,0 +1,7 @@
+name: "core"
+displayName: "Core"
+author: "AmateurPotion"
+main: "core.Core"
+description: "A jar mod."
+version: 1.0
+minGameVersion: 105
