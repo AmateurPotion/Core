@@ -1,6 +1,5 @@
 package core.world.blocks.frame;
 
-import arc.func.Cons;
 import arc.scene.ui.layout.Table;
 import arc.struct.EnumSet;
 import mindustry.gen.*;
@@ -9,7 +8,7 @@ import mindustry.ui.Styles;
 import mindustry.world.Block;
 import mindustry.world.meta.*;
 
-import core.Core;
+import static core.Vars.uic;
 
 public class Frame extends Block {
     public int craftTableSize = 1;
@@ -37,6 +36,7 @@ public class Frame extends Block {
             Table testTable = new Table().marginRight(13f).marginLeft(13f);
 
             table.button(Icon.upOpen, Styles.clearTransi, () -> {
+
                 Core.var.baseFrag.open(cont -> {
                     num++;
                     cont.label(() -> num+"");

@@ -9,10 +9,9 @@ import core.cotents.ContentLoader;
 
 @SuppressWarnings("unused")
 public class Core extends Mod {
-    public static Vars var;
     public Core() {
         Events.on(EventType.ClientLoadEvent.class, e -> {
-            var = new Vars();
+            Vars.load();
         });
     }
 

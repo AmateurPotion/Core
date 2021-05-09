@@ -4,17 +4,16 @@ import static mindustry.Vars.*;
 
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
+import core.ui.UICollection;
 import core.ui.fragments.*;
+import core.ui.layouts.Layout;
 
 public class Vars {
-    public BaseFragment baseFrag;
-    public Seq<arc.func.Cons<Table>> fragmentDialog;
+    public static final UICollection uic = new UICollection();
     public Vars() {
-        fragmentDialog = new Seq<arc.func.Cons<Table>>();
-        fragmentDialog.add(table -> {});
-        int i = fragmentDialog.size;
-        baseFrag = new BaseFragment();
 
-        baseFrag.build(ui.hudGroup);
+    }
+    public static void load() {
+        uic.build(ui.hudGroup);
     }
 }
