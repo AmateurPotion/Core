@@ -1,16 +1,22 @@
 package core.cotents;
 
+import arc.struct.Seq;
 import core.world.blocks.frame.Frame;
 import mindustry.content.Items;
 import mindustry.ctype.ContentList;
 import mindustry.type.Category;
 import mindustry.world.Block;
+import mindustry.world.blocks.defense.Wall;
 
 import static mindustry.type.ItemStack.with;
 
 public class BlockList implements ContentList {
-    public static Block frame, doublicFrame;
-
+    // Block - tile
+    public static Block
+    // Block - structure
+            frame, doublicFrame;
+    // Block - autoTile
+    public static Seq<Block> orePlate;
 
     @Override
     public void load() {
@@ -26,5 +32,9 @@ public class BlockList implements ContentList {
             itemCapacity = 40;
             size = 2;
         }};
+
+        orePlate = Seq.with(
+
+        );
     }
 }
