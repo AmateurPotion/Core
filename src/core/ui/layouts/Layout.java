@@ -4,7 +4,7 @@ import arc.scene.ui.layout.Table;
 
 public class Layout {
     public final String id;
-    public boolean visible = true;
+    public boolean visible = false;
     public Integer priority;
     public arc.func.Cons<Table> content;
     public Layout(String layoutId) {
