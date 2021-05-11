@@ -37,10 +37,6 @@ public class Frame extends Block {
 
             table.button(Icon.upOpen, Styles.clearTransi, () -> {
 
-                Core.var.baseFrag.open(cont -> {
-                    num++;
-                    cont.label(() -> num+"");
-                });
             }).size(40f);
         }
 

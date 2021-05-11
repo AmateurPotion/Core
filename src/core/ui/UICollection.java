@@ -7,8 +7,8 @@ import mindustry.gen.Tex;
 import mindustry.ui.fragments.Fragment;
 
 public final class UICollection {
-    private final Seq<Layout> layoutList;
-
+    public final Seq<Layout> layoutList;
+    public boolean update = true;
     public UICollection() {
         layoutList = Seq.with();
     }
@@ -21,19 +21,23 @@ public final class UICollection {
             fragment.build(parent);
         }
     }
+
     private class FragmentDialog extends Fragment {
 
         @Override
         public void build(Group parent) {
             parent.fill(cont -> {
                 cont.visible(() -> true);
-                cont.table(Tex.buttonTrans, table -> {
-                    table.clear();
-                    layoutList.sort(layout -> layout.priority);
-                    for(Layout layout: layoutList.toArray()) {
-                        if(layout.visible) layout.content.get(table);
+                cont.table(Tex.buttonTrans, table -> cont.update(() -> {
+                    if (update) {
+                        table.clear();
+                        layoutList.sort(layout -> layout.priority);
+                        for(Layout layout: layoutList.toArray()) {
+                            if(layout.visible) layout.content.get(table);
+                        }
+                        update = false;
                     }
-                }).margin(14f).minWidth(360f);;
+                })).margin(14f).minWidth(360f);
             });
         }
     }
