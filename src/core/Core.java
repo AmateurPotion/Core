@@ -3,9 +3,12 @@ package core;
 import arc.*;
 import arc.util.*;
 import mindustry.*;
+import mindustry.ctype.ContentType;
 import mindustry.game.EventType;
 import mindustry.mod.*;
 import core.cotents.ContentLoader;
+
+import java.util.Arrays;
 
 @SuppressWarnings("unused")
 public class Core extends Mod {
