@@ -2,6 +2,7 @@ package core.world.blocks.frame;
 
 import arc.scene.ui.layout.Table;
 import arc.struct.EnumSet;
+import core.ui.layouts.Layout;
 import mindustry.gen.*;
 import mindustry.type.Item;
 import mindustry.ui.Styles;
@@ -27,7 +28,6 @@ public class Frame extends Block {
         group = BlockGroup.logic;
         flags = EnumSet.of(BlockFlag.storage);
     }
-    private static int num = 0;
 
     @SuppressWarnings("unused")
     public class FrameBuild extends Building {
@@ -36,7 +36,10 @@ public class Frame extends Block {
             Table testTable = new Table().marginRight(13f).marginLeft(13f);
 
             table.button(Icon.upOpen, Styles.clearTransi, () -> {
-
+                uic.addLayout(new Layout("frameUI", cont -> {
+                    cont.label(() -> "test");
+                }, 0));
+                uic.toggleLayout("frameUI");
             }).size(40f);
         }
 
