@@ -12,7 +12,7 @@ import java.util.Objects;
 import static core.Vars.*;
 
 public final class UICollection {
-    public final Seq<Layout> layoutList;
+    private final Seq<Layout> layoutList;
     public boolean update = true;
     public UICollection() {
         layoutList = Seq.with();
@@ -30,9 +30,22 @@ public final class UICollection {
     public void addLayout(Layout layout) {
         if(layoutList.find(cont -> Objects.equals(cont.id, layout.id)) == null){
             layoutList.add(layout);
-        } else if(debugMode) {
+        } else {
             Log.info(layout.id + " is not active because it already exists.");
         }
+    }
+
+    public void setLayout(Layout layout) {
+        layoutList.removeAll(remove -> Objects.equals(remove.id, layout.id));
+        layoutList.add(layout);
+    }
+
+    public void setLayoutVisible(String id, boolean visible) {
+        layoutList.find(layout -> Objects.equals(layout.id, id)).visible = visible;
+    }
+
+    public void delLayout(String id) {
+        layoutList.removeAll(layout -> Objects.equals(layout.id, id));
     }
 
     public void toggleLayout(String layoutId) {
