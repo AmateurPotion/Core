@@ -1,14 +1,12 @@
 package core;
 
 import arc.*;
-import arc.util.*;
-import mindustry.*;
-import mindustry.ctype.ContentType;
 import mindustry.game.EventType;
 import mindustry.mod.*;
-import core.cotents.ContentLoader;
 
-import java.util.Arrays;
+import static mindustry.Vars.*;
+
+import core.cotents.ContentLoader;
 
 @SuppressWarnings("unused")
 public class Core extends Mod {
@@ -20,6 +18,7 @@ public class Core extends Mod {
 
     @Override
     public void loadContent() {
+        content.setCurrentMod(null);
         new ContentLoader().load();
     }
 }

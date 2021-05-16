@@ -14,7 +14,7 @@ public class ContentLoader implements ContentList {
 
     @Override
     public void load() {
-        for (ContentList content: contents) {
+        for (ContentList content : contents) {
             content.load();
         }
     }
