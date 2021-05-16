@@ -2,10 +2,12 @@ package core.world.blocks.frame;
 
 import arc.Core;
 import arc.scene.ui.layout.Table;
+import arc.struct.Seq;
 import arc.util.Log;
 import core.ui.layouts.Layout;
 import mindustry.gen.*;
 import mindustry.type.Item;
+import mindustry.type.ItemStack;
 import mindustry.ui.Styles;
 import mindustry.world.Block;
 
@@ -29,18 +31,20 @@ public class Frame extends Block {
         @Override
         public void buildConfiguration(Table table) {
             table.button(Icon.upOpen, Styles.clearTransi, () -> {
+                Seq<ItemStack> inv;
                 if(!uic.getLayout("frameUI").visible){
+                    inv = Seq.with();
                     for(int i = 0; i < items.length(); i++) {
                         if(items.get(i) > 0) {
                             int finalI = i;
-                            Log.info(content.items().find(item -> item.id == finalI).emoji() + " / " + items.get(i));
+                            inv.add(new ItemStack(content.items().find(item -> item.id == finalI), items.get(i)));
                         }
                     }
-                }
 
-                uic.addLayout(new Layout("frameUI", cont -> {
-                    cont.label(() -> Core.bundle.format("frame.title"));
-                }, 0));
+                    uic.addLayout(new Layout("frameUI", cont -> {
+                        cont.label(() -> Core.bundle.format("frame.title"));
+                    }, 0));
+                }
                 uic.toggleLayout("frameUI");
             }).size(40f);
         }
