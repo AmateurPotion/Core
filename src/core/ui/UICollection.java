@@ -47,7 +47,7 @@ public final class UICollection {
     }
 
     public Layout getLayout(String id) {
-        return layoutList.find(layout -> Objects.equals(layout.id, id));
+        return layoutList.find(layout -> Objects.equals(layout.id, id)) != null ? layoutList.find(layout -> Objects.equals(layout.id, id)) : new Layout(id, cont ->{}, 0);
     }
 
     public void setLayoutVisible(String id, boolean visible) {
