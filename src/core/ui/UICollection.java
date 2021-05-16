@@ -27,24 +27,22 @@ public final class UICollection {
         }
     }
 
-    @Deprecated
-    /*  setLayout 메소드를 쓸 것
-    *   필요할 거 같아 냅두긴 했으나 TODO 더 이상 변경이 불가능하다 느껴지면 삭제해야됨.
-    * */
     public void addLayout(Layout layout) {
         if(layoutList.find(cont -> Objects.equals(cont.id, layout.id)) == null){
             layoutList.add(layout);
             update = true;
-        } else {
+        } else if(debugMode) {
             Log.info(layout.id + " is not active because it already exists.");
         }
     }
 
+    /* TODO 레이아웃 활성화/비활성화가 정상적으로 되지않음 ㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜ
     public void setLayout(Layout layout) {
         layoutList.removeAll(remove -> Objects.equals(remove.id, layout.id));
         layoutList.add(layout);
         update = true;
     }
+    */
 
     public Layout getLayout(String id) {
         return layoutList.find(layout -> Objects.equals(layout.id, id)) != null ? layoutList.find(layout -> Objects.equals(layout.id, id)) : new Layout(id, cont ->{}, 0);
