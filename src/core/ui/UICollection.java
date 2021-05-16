@@ -27,6 +27,10 @@ public final class UICollection {
         }
     }
 
+    @Deprecated
+    /*  setLayout 메소드를 쓸 것
+    *   필요할 거 같아 냅두긴 했으나 TODO 더 이상 변경이 불가능하다 느껴지면 삭제해야됨.
+    * */
     public void addLayout(Layout layout) {
         if(layoutList.find(cont -> Objects.equals(cont.id, layout.id)) == null){
             layoutList.add(layout);
