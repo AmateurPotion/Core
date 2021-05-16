@@ -30,6 +30,7 @@ public final class UICollection {
     public void addLayout(Layout layout) {
         if(layoutList.find(cont -> Objects.equals(cont.id, layout.id)) == null){
             layoutList.add(layout);
+            update = true;
         } else {
             Log.info(layout.id + " is not active because it already exists.");
         }
@@ -38,14 +39,23 @@ public final class UICollection {
     public void setLayout(Layout layout) {
         layoutList.removeAll(remove -> Objects.equals(remove.id, layout.id));
         layoutList.add(layout);
+        update = true;
+    }
+
+    public Layout getLayout(String id) {
+        return layoutList.find(layout -> Objects.equals(layout.id, id));
     }
 
     public void setLayoutVisible(String id, boolean visible) {
         layoutList.find(layout -> Objects.equals(layout.id, id)).visible = visible;
+        if(layoutList.find(layout -> Objects.equals(layout.id, id)).visible != visible) {
+            update = true;
+        }
     }
 
     public void delLayout(String id) {
         layoutList.removeAll(layout -> Objects.equals(layout.id, id));
+        update = true;
     }
 
     public void toggleLayout(String layoutId) {
