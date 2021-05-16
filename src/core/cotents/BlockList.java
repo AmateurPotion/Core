@@ -6,7 +6,6 @@ import mindustry.content.Items;
 import mindustry.ctype.ContentList;
 import mindustry.type.Category;
 import mindustry.world.Block;
-import mindustry.world.blocks.defense.Wall;
 
 import static mindustry.type.ItemStack.with;
 
@@ -31,6 +30,7 @@ public class BlockList implements ContentList {
             requirements(Category.effect, with(Items.scrap, 50, Items.copper, 30, Items.lead, 50)) ;
             itemCapacity = 40;
             size = 2;
+            craftTableSize = 2;
         }};
 
         orePlate = Seq.with(
