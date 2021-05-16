@@ -14,6 +14,7 @@ import static core.Vars.*;
 public final class UICollection {
     private final Seq<Layout> layoutList;
     public boolean update = true;
+    private boolean threadRunning = false;
     public UICollection() {
         layoutList = Seq.with();
     }
@@ -74,12 +75,15 @@ public final class UICollection {
                 cont.table(Tex.buttonTrans, table -> {
                     cont.visible(() -> layoutList.filter(layout -> layout.visible).size > 0);
                     cont.update(() -> {
-                        if (update) {
-                            table.clear();
-                            layoutList.sort(layout -> layout.priority);
-                            for (Layout layout : layoutList.toArray()) {
-                                if (layout.visible) layout.content.get(table);
-                            }
+                        if (update && !threadRunning) {
+                            new Thread(() -> {
+                                table.clear();
+                                layoutList.sort(layout -> layout.priority);
+                                for (Layout layout : layoutList.toArray()) {
+                                    if (layout.visible) layout.content.get(table);
+                                }
+                                threadRunning = false;
+                            }).start();
                             update = false;
                         }
                     });
