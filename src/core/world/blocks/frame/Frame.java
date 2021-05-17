@@ -36,13 +36,20 @@ public class Frame extends Block {
                     inv = Seq.with();
                     for(int i = 0; i < items.length(); i++) {
                         if(items.get(i) > 0) {
-                            int finalI = i;
-                            inv.add(new ItemStack(content.items().find(item -> item.id == finalI), items.get(i)));
+                            inv.add(new ItemStack(content.item(i), items.get(i)));
                         }
                     }
-
+                    // 생성전 연산
                     uic.addLayout(new Layout("frameUI", cont -> {
                         cont.label(() -> Core.bundle.format("frame.title"));
+                        cont.row();
+                        // 여따 조합창 구현 예정
+
+                        cont.row();
+                        // 여기서부턴 블럭내 자원 표시 및 자원 선택 패널 설정
+                        for(int i = 0; i < inv.size; i++) {
+                            cont.check(inv.get(i).item.emoji(), i == 0, cb -> {});
+                        }
                     }, 0));
                 }
                 uic.toggleLayout("frameUI");
