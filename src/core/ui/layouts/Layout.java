@@ -5,18 +5,15 @@ import arc.scene.ui.layout.Table;
 public class Layout {
     public final String id;
     public boolean visible = false;
-    public Integer priority;
-    public arc.func.Cons<Table> content;
+    public Integer priority = 0;
+    public arc.func.Cons<Table> content = cont -> {};
+
     public Layout(String layoutId) {
         id = layoutId;
-        content = cont -> {
-        };
-        priority = 0;
     }
     public Layout(String layoutId, arc.func.Cons<Table> table) {
         id = layoutId;
         content = table;
-        priority = 0;
     }
     public Layout(String layoutId, arc.func.Cons<Table> table, Integer layoutPriority) {
         id = layoutId;
