@@ -1,6 +1,7 @@
 package core;
 
 import arc.*;
+import core.world.blocks.frame.Frame;
 import mindustry.game.EventType;
 import mindustry.mod.*;
 

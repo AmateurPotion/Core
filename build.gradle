@@ -2,7 +2,8 @@ apply plugin: "java"
 
 version '1.0'
 
-sourceCompatibility = 1.8
+sourceCompatibility = "14"
+targetCompatibility = JavaVersion.VERSION_14
 
 sourceSets.main.java.srcDirs = ["src"]
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
@@ -28,8 +29,8 @@ ext{
 //java 8 backwards compatibility flag
 allprojects{
     tasks.withType(JavaCompile){
-        if(JavaVersion.current() != JavaVersion.VERSION_1_8){
-            options.compilerArgs.addAll(['--release', '8'])
+        if(JavaVersion.current() != JavaVersion.VERSION_14){
+            options.compilerArgs.addAll(['--release', '14'])
         }
     }
 }
