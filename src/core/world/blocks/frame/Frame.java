@@ -28,6 +28,8 @@ public class Frame extends Block {
 
     @SuppressWarnings("unused")
     public class FrameBuild extends Building {
+        private boolean testB = true;
+        private boolean updateTest = true;
         @Override
         public void buildConfiguration(Table table) {
             table.button(Icon.upOpen, Styles.clearTransi, () -> {
@@ -40,17 +42,22 @@ public class Frame extends Block {
                         }
                     }
                     // 생성전 연산
-                    uic.addLayout(new Layout("frameUI", cont -> {
+                    uic.addLayout(new Layout("frameUI", new Table (cont -> {
                         cont.label(() -> Core.bundle.format("frame.title"));
                         cont.row();
                         // 여따 조합창 구현 예정
 
                         cont.row();
                         // 여기서부턴 블럭내 자원 표시 및 자원 선택 패널 설정
-                        for(int i = 0; i < inv.size; i++) {
-                            cont.check(inv.get(i).item.emoji(), i == 0, cb -> {});
-                        }
-                    }, 0));
+                        cont.update(() -> {
+                            if(updateTest){
+                                for(int i = 0; i < inv.size; i++) {
+                                    cont.check(inv.get(i).item.emoji(), i == 0 || testB, cb -> {testB = true; updateTest = true;});
+                                }
+                                updateTest = false;
+                            }
+                        });
+                    }), 0));
                 }
                 uic.toggleLayout("frameUI");
             }).size(40f);
