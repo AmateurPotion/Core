@@ -6,7 +6,7 @@ public class Layout {
     public final String id;
     public boolean visible = false;
     public boolean update = true;
-    public Integer priority;
+    public int priority;
     public Table content;
 
     public Layout(String layoutId) {
@@ -17,9 +17,14 @@ public class Layout {
         this(layoutId,table, 0);
     }
 
-    public Layout(String layoutId, Table table, Integer layoutPriority) {
+    public Layout(String layoutId, Table table, int layoutPriority) {
         id = layoutId;
         content = table;
         priority = layoutPriority;
+    }
+    public Layout(String layoutId, Layout layout) {
+        this(layoutId, layout.content, layout.priority);
+        visible = layout.visible;
+        update = layout.update;
     }
 }
