@@ -1,6 +1,7 @@
 package core.ui;
 
 import arc.func.Boolp;
+import arc.func.Cons;
 import arc.scene.Group;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
@@ -19,7 +20,8 @@ public final class UICollection {
     private boolean init = true;
     public boolean updateTick = false;
     private Thread layoutDrawer;
-    private ArrayList<String> deleteList = new ArrayList<>();
+    private final ArrayList<String> deleteList = new ArrayList<>();
+    private final Seq<Layout> updateList = Seq.with();
 
     public UICollection() {
         layoutList = Seq.with();
@@ -42,25 +44,33 @@ public final class UICollection {
         }
     }
 
-    /* TODO 레이아웃 활성화/비활성화가 정상적으로 되지않음 ㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜ
-    public void setLayout(Layout layout) {
-        layoutList.removeAll(remove -> Objects.equals(remove.id, layout.id));
-        layoutList.add(layout);
-        update = true;
-    }
-    */
-
     public Layout getLayout(String id) {
         return layoutList.find(layout -> Objects.equals(layout.id, id)) != null ? layoutList.find(layout -> Objects.equals(layout.id, id)) : new Layout(id, new Table(cont -> cont.name = "nullTable"), 0);
     }
 
     public void toggleLayout(String layoutId) {
-        uic.layoutList.find(layout -> Objects.equals(layout.id, layoutId)).visible = !uic.layoutList.find(layout -> Objects.equals(layout.id, layoutId)).visible;
-        uic.layoutList.find(layout -> Objects.equals(layout.id, layoutId)).update = true;
+        layoutList.find(layout -> Objects.equals(layout.id, layoutId)).visible = !layoutList.find(layout -> Objects.equals(layout.id, layoutId)).visible;
+        layoutList.find(layout -> Objects.equals(layout.id, layoutId)).update = true;
+    }
+
+    public void toggleLayout(String layoutId, boolean visible) {
+        layoutList.find(layout -> Objects.equals(layout.id, layoutId)).visible = visible;
+        layoutList.find(layout -> Objects.equals(layout.id, layoutId)).update = true;
     }
 
     public void delLayout(String layoutId) {
         deleteList.add(layoutId);
+    }
+
+    public void changeLayout(String layoutId, Layout layout) {
+        Layout layoutT = new Layout(layoutId, layout);
+        deleteList.add(layoutId);
+        updateList.add(layoutT);
+    }
+
+    public void changeLayout(String layoutId, Cons<Table> content) {
+        layoutList.find(layout -> Objects.equals(layout.id, layoutId)).content.fill(content);
+        layoutList.find(layout -> Objects.equals(layout.id, layoutId)).update = true;
     }
 
     private class FragmentDialog extends Fragment {
@@ -122,6 +132,10 @@ public final class UICollection {
                                             } else if (deleteList.contains(layout.id)) {
                                                 table.getChildren().find(l -> Objects.equals(l.name, layout.id)).remove();
                                                 layoutList.remove(l -> l == layout);
+                                                deleteList.remove(layout.id);
+                                                if(updateList.find(l -> Objects.equals(l.id, layout.id)) != null) {
+                                                    addLayout(updateList.find(l -> Objects.equals(l.id, layout.id)));
+                                                }
                                             } else {
                                                 table.getChildren().find(l -> Objects.equals(l.name, layout.id)).visible = false;
                                                 table.getChildren().find(l -> Objects.equals(l.name, layout.id)).visibility = () -> false;
