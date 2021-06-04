@@ -1,12 +1,15 @@
 package core.ui;
 
+import arc.func.Boolp;
 import arc.scene.Group;
+import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
 import arc.util.Log;
 import core.ui.layouts.Layout;
 import mindustry.gen.Tex;
 import mindustry.ui.fragments.Fragment;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import static core.Vars.*;
@@ -14,9 +17,9 @@ import static core.Vars.*;
 public final class UICollection {
     public final Seq<Layout> layoutList;
     private boolean init = true;
-    public boolean updateOnce = true;
     public boolean updateTick = false;
     private Thread layoutDrawer;
+    private ArrayList<String> deleteList = new ArrayList<>();
 
     public UICollection() {
         layoutList = Seq.with();
@@ -34,7 +37,6 @@ public final class UICollection {
     public void addLayout(Layout layout) {
         if(layoutList.find(cont -> Objects.equals(cont.id, layout.id)) == null){
             layoutList.add(layout);
-            updateOnce = true;
         } else if(debugMode) {
             Log.info(layout.id + " is not active because it already exists.");
         }
@@ -49,12 +51,16 @@ public final class UICollection {
     */
 
     public Layout getLayout(String id) {
-        return layoutList.find(layout -> Objects.equals(layout.id, id)) != null ? layoutList.find(layout -> Objects.equals(layout.id, id)) : new Layout(id, cont ->{}, 0);
+        return layoutList.find(layout -> Objects.equals(layout.id, id)) != null ? layoutList.find(layout -> Objects.equals(layout.id, id)) : new Layout(id, new Table(cont -> cont.name = "nullTable"), 0);
     }
 
     public void toggleLayout(String layoutId) {
         uic.layoutList.find(layout -> Objects.equals(layout.id, layoutId)).visible = !uic.layoutList.find(layout -> Objects.equals(layout.id, layoutId)).visible;
-        updateOnce = true;
+        uic.layoutList.find(layout -> Objects.equals(layout.id, layoutId)).update = true;
+    }
+
+    public void delLayout(String layoutId) {
+        deleteList.add(layoutId);
     }
 
     private class FragmentDialog extends Fragment {
@@ -64,22 +70,66 @@ public final class UICollection {
             parent.fill(cont -> {
                 cont.visible(() -> true);
                 cont.table(Tex.buttonTrans, table -> {
-                    cont.visible(() -> layoutList.filter(layout -> layout.visible).size > 0);
+                    final int[] ints = {0, 0, 0};
+                    cont.visible(() -> {
+                        ints[0] = 0;
+                        layoutList.filter(layout -> {
+                            if (layout.visible) {
+                                ints[0]++;
+                            }
+                            return true;
+                        });
+                        return ints[0] > 0;
+                    });
                     cont.update(() -> {
                         if (init) {
+                            table.clear();
                             init = false;
                             layoutDrawer = new Thread(() -> {
                                 for(;;) {
-                                    if(updateOnce || updateTick) {
-                                        table.clear();
+                                    if(updateTick || ((Boolp) () -> {
+                                        ints[1] = 0;
+                                        layoutList.filter(layout -> {
+                                            if(layout.update) {
+                                                ints[1]++;
+                                            }
+                                            return true;
+                                        });
+                                        return ints[1] > 0;
+                                    } ).get()) {
+
+                                        if(debugMode) {
+                                            table.getChildren().filter(c -> { Log.info(c.name + " / " + ints[2]); return true;});
+                                            layoutList.filter(layout -> {
+                                                ints[2] = 0;
+                                                if (layout.update) {
+                                                    ints[2]++;
+                                                }
+                                                return true;
+                                            });
+                                        }
+
                                         layoutList.sort(layout -> layout.priority);
                                         for (Layout layout : layoutList.toArray()) {
-                                            if (layout.visible) layout.content.get(table);
+                                            layoutList.find(l -> l == layout).update = false;
+                                            if (layout.visible) {
+                                                if(!table.getChildren().contains(c -> Objects.equals(c.name, layout.id))) {
+                                                    layout.content.name = layout.id;
+                                                    table.add(layout.content);
+                                                }
+                                                table.getChildren().find(l -> Objects.equals(l.name, layout.id)).visible = true;
+                                                table.getChildren().find(l -> Objects.equals(l.name, layout.id)).visibility = () -> true;
+                                            } else if (deleteList.contains(layout.id)) {
+                                                table.getChildren().find(l -> Objects.equals(l.name, layout.id)).remove();
+                                                layoutList.remove(l -> l == layout);
+                                            } else {
+                                                table.getChildren().find(l -> Objects.equals(l.name, layout.id)).visible = false;
+                                                table.getChildren().find(l -> Objects.equals(l.name, layout.id)).visibility = () -> false;
+                                            }
                                         }
-                                        updateOnce = false;
                                     }
                                     try {
-                                        Thread.sleep(300);
+                                        Thread.sleep(100);
                                     } catch (InterruptedException e) {
                                         Log.errTag("Layout error", e.getLocalizedMessage());
                                     }
