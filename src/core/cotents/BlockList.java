@@ -1,6 +1,7 @@
 package core.cotents;
 
 import arc.struct.Seq;
+import core.world.blocks.frame.CustomizableBlock;
 import core.world.blocks.frame.Frame;
 import mindustry.content.Items;
 import mindustry.ctype.ContentList;
@@ -16,6 +17,7 @@ public class BlockList implements ContentList {
             frame, doublicFrame;
     // Block - autoTile
     public static Seq<Block> orePlate;
+    public static final Block[] undeclaredFrames = new CustomizableBlock[2];
 
     @Override
     public void load() {
@@ -33,8 +35,12 @@ public class BlockList implements ContentList {
             craftTableSize = 2;
         }};
 
-        orePlate = Seq.with(
+        orePlate = Seq.with();
 
-        );
+        for(int i = 0; i < 0; i++) {
+            undeclaredFrames[i] = new CustomizableBlock("") {{
+
+            }};
+        }
     }
 }
