@@ -33,6 +33,8 @@ public class Frame extends Block {
             table.button(Icon.upOpen, Styles.clearTransi, () -> {
                 Seq<ItemStack> inv;
                 uic.addChild("frameUI", cont -> {
+                    cont.margin(14f);
+                    cont.getMinWidth();
                     cont.label(() -> Core.bundle.format("frame.title"));
 
                     cont.visible = false;
