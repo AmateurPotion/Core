@@ -2,8 +2,6 @@ package core.ui;
 
 import arc.func.Cons;
 import arc.scene.Group;
-import arc.scene.event.Touchable;
-import arc.scene.ui.layout.Cell;
 import arc.scene.ui.layout.Table;
 import mindustry.ui.fragments.Fragment;
 
@@ -34,6 +32,7 @@ public final class UICollection {
         updateState.add(2);
         update = true;
     }
+
     public void toggle(String name) {
         names.add(name);
         updateState.add(3);
