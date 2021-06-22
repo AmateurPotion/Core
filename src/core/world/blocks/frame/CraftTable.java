@@ -1,7 +1,5 @@
 package core.world.blocks.frame;
 
-import mindustry.content.Items;
-import mindustry.type.Item;
 import mindustry.type.ItemStack;
 import mindustry.world.Block;
 
