@@ -4,8 +4,8 @@ import mindustry.ctype.ContentList;
 
 public class ContentLoader implements ContentList {
     private final ContentList[] contents = new ContentList[]{
-        new BlockList(),
         new ItemList(),
+        new BlockList(),
         new LiquidList(),
         new PlanetList(),
         new WeatherList(),
