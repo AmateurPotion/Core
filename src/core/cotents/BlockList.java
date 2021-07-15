@@ -7,14 +7,17 @@ import core.world.blocks.frame.Frame;
 import mindustry.content.Items;
 import mindustry.ctype.ContentList;
 import mindustry.type.Category;
+import mindustry.type.Item;
 import mindustry.world.Block;
+import mindustry.world.blocks.environment.OverlayFloor;
+import mindustry.world.meta.BuildVisibility;
 
 import static mindustry.Vars.content;
 import static mindustry.type.ItemStack.with;
 
 public class BlockList implements ContentList {
     // Block - tile
-    public static Block
+    public static Block test,
     // Block - structure
             frame, doublicFrame;
     // Block - autoTile
@@ -22,6 +25,7 @@ public class BlockList implements ContentList {
 
     @Override
     public void load() {
+
         frame = new Frame("basic-frame"){{
             requirements(Category.effect, with(Items.scrap, 50));
             itemCapacity = 10;
@@ -37,12 +41,13 @@ public class BlockList implements ContentList {
         }};
 
         plates = Seq.with();
-        content.items().copy().filter(item -> {
-            plates.add(new ItemPlate(item.name.toLowerCase()+"-plate", item){{
-            }});
-            Log.info(item.localizedName + " / " + item.color.toString());
-            return true;
-        });
 
+        for(int i = 0; i < content.items().size; i++) {
+            plates.add(
+                    new ItemPlate(content.items().get(i).name +"-plate", content.items().get(i), 1){{
+                        buildVisibility = BuildVisibility.editorOnly;
+                    }}
+            );
+        }
     }
 }
