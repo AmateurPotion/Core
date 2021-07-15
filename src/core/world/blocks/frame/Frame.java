@@ -10,7 +10,7 @@ import mindustry.type.ItemStack;
 import mindustry.ui.Styles;
 import mindustry.world.Block;
 
-import static core.Vars.uic;
+import static core.Variable.uic;
 
 public class Frame extends Block {
     public int craftTableSize = 1;
@@ -19,7 +19,6 @@ public class Frame extends Block {
         super(name);
         researchCostMultiplier = 10;
         health = size * 2 * 50;
-        destructible = true;
         configurable = true;
         hasItems = true;
     }
@@ -42,42 +41,6 @@ public class Frame extends Block {
 
                 uic.toggle("frameUI");
 
-                /*
-                if(!uic.getLayout("frameUI").visible){
-                    inv = Seq.with();
-
-                    // 생성전 연산
-                    uic.addLayout(new Layout("frameUI", new Table (cont -> {
-                        cont.label(() -> Core.bundle.format("frame.title") + "Tier :" + craftTableSize);
-                        cont.row();
-                        // 여따 조합창 구현 예정
-
-                        cont.row();
-                        // 여기서부턴 블럭내 자원 표시 및 자원 선택 패널 설정
-                        table.update(() -> {
-                            if(updateTest){
-                                for(int i = 0; i < items.length(); i++) {
-                                    if(items.get(i) > 0) {
-                                        inv.add(new ItemStack(content.item(i), items.get(i)));
-                                    }
-                                }
-
-                                for(int i = 0; i < inv.size; i++) {
-                                    int finalI = i;
-                                    String emoji = inv.get(finalI).item.emoji();
-                                    if (cont.getChildren().find(element -> Objects.equals(element.name, inv.get(finalI).item.emoji())) != null) {
-                                        cont.getChildren().find(element -> Objects.equals(element.name, inv.get(finalI).item.emoji())).remove();
-                                        Log.info("a");
-                                    }
-                                    cont.button(b -> {b.label(() -> emoji); b.name = emoji; },() -> {});
-                                }
-                                updateTest = false;
-                            }
-                        });
-                    }), 0));
-                }
-                uic.toggleLayout("frameUI");
-                */
             }).size(40f);
         }
         public boolean acceptItem(Building source, Item item) {
