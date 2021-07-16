@@ -12,6 +12,10 @@ public class TextureEditor {
     }
 
     public static Pixmap paint(PixmapRegion region, Color targetColor) {
+        return paint(region.crop(), targetColor);
+    }
+
+    public static Pixmap paint(Pixmap region, Color targetColor) {
         Pixmap result = new Pixmap(region.width, region.height);
 
         for(int x = 0; x < region.width; x++) {
@@ -30,12 +34,16 @@ public class TextureEditor {
         return result;
     }
 
+    public static Pixmap resize(Pixmap source, int targetSize) {
+        return resize(source, targetSize, targetSize);
+    }
+
     public static Pixmap resize(Pixmap source, int targetWidth, int targetHeight) {
+        int ratioX = targetWidth / source.width, ratioY = targetHeight / source.height;
         Pixmap result = new Pixmap(targetWidth, targetHeight);
         for(int x = 0; x < targetWidth; x++) {
             for(int y = 0; y < targetHeight; y++) {
-                Color tempC = new Color(source.get(x, y));
-
+                result.setRaw(x, y, source.get(Math.min(x * ratioX, source.width), Math.min(y * ratioY, source.height)));
             }
         }
         return result;
