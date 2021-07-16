@@ -34,10 +34,9 @@ public class ItemPlate extends OverlayFloor {
         inEditor = true;
         Events.on(EventType.ClientLoadEvent.class, e -> {
             PixmapRegion pr = Core.atlas.getPixmap("plate-" + shape);
-            this.uiIcon = new TextureRegion(new Texture(TextureEditor.paint(pr, itemProperty.color)));
-            Log.info(pr.width);
-            Log.info(uiIcon.width);
-            Log.info(variantRegions[1].width);
+            Pixmap region = TextureEditor.paint(pr, itemProperty.color);
+            uiIcon = new TextureRegion(new Texture(region));
+            variantRegions[1] = new TextureRegion(new Texture(TextureEditor.resize(region, variantRegions[1].width, variantRegions[1].height)));
         });
     }
 
