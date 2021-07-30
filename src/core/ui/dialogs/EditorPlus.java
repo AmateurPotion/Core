@@ -67,9 +67,12 @@ public class EditorPlus {
                             int sx = e.tile.x, sy = Math.max(e.tile.y - copyData.height + 1, 0);
                             for(int y = 0; y < (e.tile.y - copyData.height > -2 ? copyData.height : e.tile.y + 1); y++) {
                                 for(int x = 0; x < (e.tile.x + copyData.width < Vars.world.width() ? copyData.width : Vars.world.width() - e.tile.x); x++) {
+                                    copyData.get(x, y).x = (short) (sx + x);
+                                    copyData.get(x, y).y = (short) (sy + y);
                                     Vars.world.tiles.set(sx + x, sy + y, copyData.get(x, y));
                                 }
                             }
+                            copyData = null;
                         }
                         break;
                 }
